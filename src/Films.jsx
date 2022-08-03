@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useFilms, useFilm } from './api';
+import { useFilms, useFilm, useUpdateFilmTitle } from './api';
 
 const Films = () => {
   const { data, isLoading } = useFilms();
@@ -26,6 +26,8 @@ const Films = () => {
 
 const Film = ({ id }) => {
   const { data, isLoading, isRefetching } = useFilm(id);
+  const mutation = useUpdateFilmTitle(id);
+
   console.log('Film', { isLoading, isRefetching });
 
   if (isLoading) return <h1>Loading...</h1>;
@@ -34,6 +36,9 @@ const Film = ({ id }) => {
     <>
       <h1>{data?.title}</h1>
       <p>{data?.opening_crawl}</p>
+      <button onClick={() => { mutation.mutate('!'); }}>
+        Make title more exciting!
+      </button>
     </>
   );
 };
